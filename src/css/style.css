@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  color: #333;
+}
+
+#word {
+  font-size: 2em;
+  letter-spacing: 10px;
+  margin-bottom: 20px;
+}
+
+#letters button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+#letters button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+#letters button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+#status {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
