@@ -17,7 +17,7 @@ const words = [
   "LAOS","LESOTO","LETONIA","LIBANO","LIBERIA","LIBIA",
   "LIECHTENSTEIN","LITUANIA","LUXEMBURGO","MACEDONIA DO NORTE","MADAGASCAR","MALASIA",
   "MALAVI","MALDIVAS","MALI","MALTA","MARROCOS","MAURICIOS",
-  "MAURITANIA","MEXICO","MICRONESIA","MOÇAMBIQUE","MOLDAVIA","MONACO",
+  "MAURITANIA","MEXICO","MICRONESIA","MOCAMBIQUE","MOLDAVIA","MONACO",
   "MONGOLIA","MONTENEGRO","MYANMAR","NAMIBIA","NAURU","NEPAL",
   "NICARAGUA","NIGER","NIGERIA","NOVA ZELANDIA","NORUEGA","OMA",
   "PAQUISTAO","PANAMA","PAPUA NOVA GUINE","PARAGUAI","PERU","POLONIA",
@@ -36,9 +36,13 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 const wordDiv = document.getElementById('word')
-const lettersDiv = document.getElementById('letters')
+const buttonsDiv = document.getElementById('letters')
 const statusDiv = document.getElementById('status')
-let corrects = []
+const reloadBtn = document.getElementById('reload-btn')
+
+const maxErrors = 6
+let errors = 0
+let corrects = [' ', '-']
 
 function showWord() {
     wordDiv.textContent = answer
@@ -46,8 +50,76 @@ function showWord() {
     .map(letter => {
         if (corrects.includes(letter)) {
             return letter
+        } else if (letter === ' '){
+            return ' '
+        } else if (letter === '-') {
+            return '-'
         } else {
             return '_'
         }
     })
+    .join('')
 }
+
+function guessLetter(letter, btn) {
+    btn.disabled = true
+
+    if (answer.includes(letter)) {
+        corrects.push(letter)
+    } else {
+        errors++
+    }
+    showWord()
+    checkEnd()
+    drawDummy(errors)
+}
+
+function showButtons() {
+    const letters = alphabet.split('')
+    letters.forEach(letter => {
+        const newButton = document.createElement('button')
+        newButton.textContent = letter
+        newButton.onclick = () => guessLetter(letter, newButton)
+        buttonsDiv.appendChild(newButton)
+    })
+}
+
+function checkEnd() {
+    if (errors == maxErrors) {
+        statusDiv.textContent = `Você perdeu! A palavra era ${answer}`
+        statusDiv.style.color = 'red'
+        block()
+    } else if (answer.split('').every(letter => corrects.includes(letter))) {
+        statusDiv.textContent = 'Parabéns, você acertou!'
+        statusDiv.style.color = 'green'
+        block()
+    }
+}
+
+function block() {
+    const allButtons = buttonsDiv.querySelectorAll('button')
+    allButtons.forEach(btn => btn.disabled = true)
+}
+
+function unblock() {
+    const allButtons = buttonsDiv.querySelectorAll('button')
+    allButtons.forEach(btn => btn.disabled = false)
+}
+
+function refresh() {
+    reloadBtn.classList.remove('reload-btn-clicked')
+    reloadBtn.offsetWidth
+    reloadBtn.classList.add('reload-btn-clicked')
+
+    answer = words[Math.floor(Math.random() * words.length)]
+    errors = 0
+    corrects = [' ', '-']
+    statusDiv.textContent = ''
+    unblock()
+    showWord()
+    drawDummy(errors)
+}
+
+showButtons()
+showWord()
+drawBase()

@@ -41,3 +41,38 @@ h1 {
   font-weight: bold;
   font-size: 1.2em;
 }
+
+#reload-btn-div {
+    height: 15px;
+    position: relative;
+}
+
+#reload-btn {
+    font-family: Segoe UI Emoji, Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    position: absolute;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s ease-out;
+    
+}
+
+#reload-btn:hover {
+    opacity: 1;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#reload-btn.reload-btn-clicked {
+    transform-origin: center;
+    animation: reload 0.5s ease-in-out;
+}
+
+@keyframes reload {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+#drawing {
+  display: block;
+  margin: 20px auto;
+}
